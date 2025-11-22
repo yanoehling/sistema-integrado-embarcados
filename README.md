@@ -1,12 +1,3 @@
-# Requirements para o backend:
-express sqlite3 body-parser
-
-# Requirements para o frontend:
-
-# Requirements para o esp32:
-
-
-
 # Instrução para rodar:
 ## Backend:
 node api-gateway.js
@@ -17,3 +8,11 @@ node logging.js
 
 ## Embarcado (esp32):
 Adicionar o código na placa via IDE (Arduino IDE) e deixar rodando.
+
+# Requirements:
+## Para o backend:
+express sqlite3 body-parser
+
+### Para o frontend:
+
+### Para o esp32:
