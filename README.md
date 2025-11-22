@@ -13,6 +13,6 @@ Adicionar o código na placa via IDE (Arduino IDE) e deixar rodando.
 ## Para o backend:
 express sqlite3 body-parser
 
-### Para o frontend:
+## Para o frontend:
 
-### Para o esp32:
+## Para o esp32:
