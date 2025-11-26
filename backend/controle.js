@@ -31,7 +31,8 @@ db.run(`CREATE TABLE IF NOT EXISTS configs (
 );
 
 app.post('/add-config', (req, res) => {
-    db.run(`INSERT INTO configs VALUES (?, ?, ?, ?, ?)`,
+    db.run(`INSERT INTO configs (max_distance, min_delay, max_delay, light_on, sound_on) 
+            VALUES (?, ?, ?, ?, ?)`,
         [req.body.max_distance, req.body.min_delay, req.body.max_delay, req.body.light_on, req.body.sound_on],
         (err, bd_res) => {
         if (err){
