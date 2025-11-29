@@ -2,7 +2,10 @@ const express = require('express');
 const app = express();
 const sqlite3 = require('sqlite3');
 const body_parser = require('body-parser');
+const cors = require("cors");
+app.use(cors());
 const port = 8080;
+const IP ="192.168.0.55";
 
 app.use(body_parser.json());
 app.use(body_parser.urlencoded({extended: true}));
@@ -67,6 +70,6 @@ app.delete('/delete/:id', (req, res) => {
     });
 });
 
-app.listen(port, () =>{
+app.listen(port, IP, () =>{
     console.log("Servidor rodando localmente na porta ", port);
 });

@@ -3,6 +3,10 @@ const app = express();
 const sqlite3 = require('sqlite3');
 const body_parser = require('body-parser');
 const port = 8000;
+const IP ="192.168.0.55";
+
+const cors = require("cors");
+app.use(cors());
 
 app.use(body_parser.json());
 app.use(body_parser.urlencoded({extended: true}));
@@ -38,7 +42,7 @@ app.post('/add-config', (req, res) => {
         if (err){
             console.log("erro: ", err);
         } else {
-            res.send(bd_res);
+            return res.status(200).send({sucesso:"Sucesso"});
         }
     });
 });
@@ -73,6 +77,6 @@ app.delete('/delete-config/:id', (req, res) => {
     });
 });
 
-app.listen(port, () =>{
+app.listen(port, IP, () =>{
     console.log("Servidor rodando localmente na porta ", port);
 });
