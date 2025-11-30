@@ -59,8 +59,8 @@ app.get('/logging/get/:id', (req, res) => {
     });
 });
 
-app.delete('/logging/delete/:id', (req, res) => {
-    db.all(`DELETE FROM logs where id = ?`, [req.params.id], (err, bd_res) => {
+app.delete('/logging/limpar-tudo', (req, res) => {
+    db.all(`DELETE FROM logs`, [req.params.id], (err, bd_res) => {
         if (err){
             console.log("erro: ", err)
         } else {

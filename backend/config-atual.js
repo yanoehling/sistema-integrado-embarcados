@@ -37,22 +37,25 @@ db.run(`CREATE TABLE IF NOT EXISTS config_atual (
 var nova_config_aplicada = true;
 
 app.post('/config-atual/aplica-config', (req, res) => {
-    db.run(`DELETE * FROM config_atual`, [], (err, bd_res) => {
+    db.run(`DELETE FROM config_atual`, [], (err, bd_res) => {
         if (err){
-            return res.status(400).send("erro: ", err);
+            console.log("erro ao deletar config antiga: ", err);
+            return res.status(500).send("Erro ao limpar config antiga.");
         }
-    });
-    db.run(`INSERT INTO config_atual (max_distance, min_delay, max_delay, light_on, sound_on)
+        db.run(`INSERT INTO config_atual (max_distance, min_delay, max_delay, light_on, sound_on)
             VALUES (?, ?, ?, ?, ?)`,
-        [req.body.max_distance, req.body.min_delay, req.body.max_delay, req.body.light_on, req.body.sound_on],
-        (err, bd_res) => {
-        if (err){
-            console.log("erro: ", err);
-        } else {
-            return res.status(200).send("Config Aplicada");
-        }
+            [req.body.max_distance, req.body.min_delay, req.body.max_delay, req.body.light_on, req.body.sound_on],
+            (err, bd_res) => {
+                if (err){
+                    console.log("erro: ", err);
+                    return res.status(500).send("Erro ao salvar nova config.");
+                } else {
+                    nova_config_aplicada = true;
+                    return res.status(200).send("Config Aplicada");
+                }
+            }
+        );
     });
-    nova_config_aplicada = true;
 });
 
 app.get('/config-atual/pega-config-atual', (req, res) => {
@@ -66,7 +69,7 @@ app.get('/config-atual/pega-config-atual', (req, res) => {
         });
         nova_config_aplicada = false;
     } else {
-        res.send(null);
+        res.send(false);
     }
 });
 
