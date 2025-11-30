@@ -32,7 +32,7 @@ export default function CreationScreen(){
     }
     if(erro)return false;
 
-    const res = await fetch("http://192.168.0.55:8000/add-config", {
+    const res = await fetch(`http://${window.location.hostname}:5000/controle/add-config`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"

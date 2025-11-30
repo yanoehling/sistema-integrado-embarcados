@@ -17,7 +17,7 @@ export default function OpcoesScreen(){
       const assyncfunc = async () =>{
         try{
           console.log("Tela opcoes renderizou!")
-          const res = await fetch('http://192.168.0.55:8000/get-all');
+          const res = await fetch(`http://${window.location.hostname}:5000/controle/get-all`);
           const json = await res.json()
           if (json.length > 0){
             setSelectedOpc(json[0])
@@ -38,7 +38,7 @@ export default function OpcoesScreen(){
   }
 
   const deleteHandle = async () =>{
-    const res = await fetch(`http://192.168.0.55:8000/delete-config/${selectedOpc.id}`,
+    const res = await fetch(`http://${window.location.hostname}:5000/controle/delete-config/${selectedOpc.id}`,
       {
         method: "DELETE",
       }

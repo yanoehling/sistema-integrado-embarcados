@@ -5,7 +5,6 @@ const body_parser = require('body-parser');
 const cors = require("cors");
 app.use(cors());
 const port = 8080;
-const IP ="192.168.0.55";
 
 app.use(body_parser.json());
 app.use(body_parser.urlencoded({extended: true}));
@@ -29,7 +28,7 @@ db.run(`CREATE TABLE IF NOT EXISTS logs (
     }
 );
 
-app.post('/register', (req, res) => {
+app.post('/logging/register', (req, res) => {
     db.all(`INSERT INTO logs VALUES (?, ?)`,
         [req.body.datetime, req.body.values_json], (err, bd_res) => {
         if (err){
@@ -40,7 +39,7 @@ app.post('/register', (req, res) => {
     });
 });
 
-app.get('/get-all', (req, res) => {
+app.get('/logging/get-all', (req, res) => {
     db.all(`SELECT * FROM logs`, [], (err, bd_res) => {
         if (err){
             console.log("erro: ", err);
@@ -50,7 +49,7 @@ app.get('/get-all', (req, res) => {
     });
 });
 
-app.get('/get/:id', (req, res) => {
+app.get('/logging/get/:id', (req, res) => {
     db.all(`SELECT * FROM logs WHERE id = ?`, [req.params.id], (err, bd_res) => {
         if (err){
             console.log("erro: ", err)
@@ -60,7 +59,7 @@ app.get('/get/:id', (req, res) => {
     });
 });
 
-app.delete('/delete/:id', (req, res) => {
+app.delete('/logging/delete/:id', (req, res) => {
     db.all(`DELETE FROM logs where id = ?`, [req.params.id], (err, bd_res) => {
         if (err){
             console.log("erro: ", err)
@@ -70,6 +69,6 @@ app.delete('/delete/:id', (req, res) => {
     });
 });
 
-app.listen(port, IP, () =>{
+app.listen(port, "0.0.0.0", () =>{
     console.log("Servidor rodando localmente na porta ", port);
 });

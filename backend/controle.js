@@ -3,7 +3,6 @@ const app = express();
 const sqlite3 = require('sqlite3');
 const body_parser = require('body-parser');
 const port = 8000;
-const IP ="192.168.0.55";
 
 const cors = require("cors");
 app.use(cors());
@@ -34,20 +33,20 @@ db.run(`CREATE TABLE IF NOT EXISTS configs (
     }
 );
 
-app.post('/add-config', (req, res) => {
-    db.run(`INSERT INTO configs (max_distance, min_delay, max_delay, light_on, sound_on) 
+app.post('/controle/add-config', (req, res) => {
+    db.run(`INSERT INTO configs (max_distance, min_delay, max_delay, light_on, sound_on)
             VALUES (?, ?, ?, ?, ?)`,
         [req.body.max_distance, req.body.min_delay, req.body.max_delay, req.body.light_on, req.body.sound_on],
         (err, bd_res) => {
         if (err){
-            console.log("erro: ", err);
+            return res.status(400).send("erro: ", err);
         } else {
-            return res.status(200).send({sucesso:"Sucesso"});
+            return res.status(200).send("Adicionado com sucesso");
         }
     });
 });
 
-app.get('/get-all', (req, res) => {
+app.get('/controle/get-all', (req, res) => {
     db.all(`SELECT * FROM configs`, [], (err, bd_res) => {
         if (err){
             console.log("erro: ", err);
@@ -57,7 +56,7 @@ app.get('/get-all', (req, res) => {
     });
 });
 
-app.get('/get/:id', (req, res) => {
+app.get('/controle/get/:id', (req, res) => {
     db.get(`SELECT * FROM configs WHERE id = ?`, [req.params.id], (err, bd_res) => {
         if (err){
             console.log("erro: ", err)
@@ -67,16 +66,16 @@ app.get('/get/:id', (req, res) => {
     });
 });
 
-app.delete('/delete-config/:id', (req, res) => {
+app.delete('/controle/delete-config/:id', (req, res) => {
     db.run(`DELETE FROM configs where id = ?`, [req.params.id], (err, bd_res) => {
         if (err){
             console.log("erro: ", err)
         } else {
-            res.send(bd_res)
+            res.send("Deletado com sucesso")
         }
     });
 });
 
-app.listen(port, IP, () =>{
+app.listen(port, "0.0.0.0", () =>{
     console.log("Servidor rodando localmente na porta ", port);
 });
