@@ -102,13 +102,13 @@ export default function OpcoesScreen(){
   }
   return(
   <View style={styles.container}>
-    <Text>Escolha uma Opção</Text>
-    <Picker style={{ width: "90%", zIndex: 10, elevation: 10 }} selectedValue={selectedOpc.id} onValueChange={(value) => {
+    <Text style={styles.title}>Escolha uma Opção</Text>
+    <Picker style={{ width: "95%", zIndex: 10, elevation: 10, marginBottom: 30, textAlign: "center", backgroundColor: "#f5f5f5"}} selectedValue={selectedOpc.id} onValueChange={(value) => {
       const configSelected = opc.find((item) => item.id == value);
       setSelectedOpc(configSelected);
     }}>
       {opc.map((c) => (
-        <Picker.Item key={c.id} label={`Opção ${c.id}`} value={c.id}/>
+        <Picker.Item key={c.id} label={`Opção ${c.id}`} value={c.id} />
       ))}
     </Picker>
     <View style={styles.grid_container}>
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 20,
     paddingTop: 40,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "white",
     alignItems: "center",
   },
 
