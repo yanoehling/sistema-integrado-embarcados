@@ -18,11 +18,12 @@ struct Config { // estrutura da configuracao e flags
     bool config_nova; // flag pra saber se é uma nova config ou a mesma de antes
 };
 
-const char* ssid = "NAMASTE"; // "y a n"
-const char* password = "Cambirela502"; // "esqueite"
+const char* ssid = "y a n"; // "y a n"
+const char* password = "esqueite"; // "esqueite"
 
-// String NOTEBOOK_IP = "http://192.168.0.55:5000"; //note do Raiden
-String NOTEBOOK_IP = "http://192.168.15.124:5000";  //note do Yan
+// String NOTEBOOK_IP = "http://192.168.0.55:5000"; // note do Raiden wifi de casa
+// String NOTEBOOK_IP = "http://192.168.15.124:5000";  // note do Yan wifi de casa
+String NOTEBOOK_IP = "http://10.243.28.142:5000";  // note do Yan no 4g do celular
 
 
 Config config_atual;
@@ -142,6 +143,7 @@ void enviaLogLeituras(std::vector<int> lista_de_leituras, int tempo_leitura_ms) 
         Serial.println("WiFi desconectado.");
         Serial.println();
     }
+    Serial.print("Distâncias lidas (cms): ");
 }
 
 
@@ -167,6 +169,8 @@ void loop() {
         if (possivel_config_nova.config_nova){  //printa se chegarem dados de config novos
             boot_recem_feito = false;
             config_atual = possivel_config_nova;
+            config_atual.config_nova = false;
+
             delay(1000);
             Serial.println();
             Serial.println("--- NOVA CONFIG APLICADA ---");
@@ -182,13 +186,9 @@ void loop() {
             Serial.println(config_atual.sound_on ? "Sim" : "Não"); 
             Serial.println(); 
             
-        } else {
-            if (boot_recem_feito){
-                Serial.println("APLIQUE UMA CONFIGURAÇÃO.");
-            } else {
-                Serial.println("Config não modificada.");
-            }
-        }
+        } else if (boot_recem_feito){
+            Serial.println("APLIQUE UMA CONFIGURAÇÃO.");
+        } 
     } else {
         Serial.println("Erro ao buscar dados atualizados.");
     }
@@ -198,9 +198,11 @@ void loop() {
     }
 
     long distancia_cms = calculaDistanciaSonic(); // sensor calcula distancia
-    Serial.print("Distância: ");
+    if (possivel_config_nova.config_nova || boot_recem_feito){
+        Serial.print("Distâncias lidas (cms): ");
+    }
     Serial.print(distancia_cms);
-    Serial.println(" cm");
+    Serial.print("; ");
 
     if (distancia_cms <= config_atual.max_distance_cm && !boot_recem_feito){
         log_leituras.push_back(distancia_cms); // adiciona na lista de logs se estiver dentro da distancia maxima e depois de aplicar config
