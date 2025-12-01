@@ -41,6 +41,10 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.button}>
+        <Button title="Histórico" onPress={() => router.push('/(tabs)/logs')} />
+      </View>
+
+      <View style={styles.button}>
         <Button title="Sair" onPress={() => BackHandler.exitApp()} />
       </View>
     </ImageBackground>
