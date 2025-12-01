@@ -38,9 +38,9 @@ export default function CreationScreen(){
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        max_distance: maxDistance,
-        min_delay: minDelay,
-        max_delay: maxDelay,
+        max_distance_cm: maxDistance,
+        min_delay_ms: minDelay,
+        max_delay_ms: maxDelay,
         light_on: lightsOn,
         sound_on: soundOn
       })

@@ -60,9 +60,9 @@ export default function OpcoesScreen(){
       ))}
     </Picker>
     <View style={styles.grid_container}>
-      <OpcoesDetail text={"Distancia Máxima"} value={selectedOpc.max_distance}/>
-      <OpcoesDetail text={"Delay Minimo"} value={selectedOpc.min_delay}/>
-      <OpcoesDetail text={"Delay Máximo"} value={selectedOpc.max_delay}/>
+      <OpcoesDetail text={"Distancia Máxima"} value={selectedOpc.max_distance_cm}/>
+      <OpcoesDetail text={"Delay Minimo"} value={selectedOpc.min_delay_ms}/>
+      <OpcoesDetail text={"Delay Máximo"} value={selectedOpc.max_delay_ms}/>
       <OpcoesDetail text={"Luzes Ligadas?"} value={selectedOpc.light_on}/>
       <OpcoesDetail text={"Som Ligado?"} value={selectedOpc.sound_on}/>
     </View>
