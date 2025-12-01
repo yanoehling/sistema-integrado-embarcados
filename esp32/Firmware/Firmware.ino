@@ -2,11 +2,11 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
-// Pinos ESP32 
-#define TRIG_PIN  5    
+// Pinos ESP32
+#define TRIG_PIN  5
 #define ECHO_PIN  18
 #define BUZZER_PIN  23
-#define LED_PIN  2    
+#define LED_PIN  2
 
 struct Config { // estrutura da configuracao e flags
     unsigned int max_distance_cm;
@@ -21,7 +21,9 @@ struct Config { // estrutura da configuracao e flags
 const char* ssid = "NAMASTE"; // "y a n"
 const char* password = "Cambirela502"; // "esqueite"
 
-String NOTEBOOK_IP = "http://192.168.15.124:5000";
+// String NOTEBOOK_IP = "http://192.168.0.55:5000"; //note do Raiden
+String NOTEBOOK_IP = "http://192.168.15.124:5000";  //note do Yan
+
 
 Config config_atual;
 std::vector<int> log_leituras;

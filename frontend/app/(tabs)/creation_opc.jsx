@@ -4,7 +4,8 @@ import {Animated, View, Text, Image, TouchableOpacity, StyleSheet} from 'react-n
 import InputComponent from '@/components/fom_component';
 import Checkbox from "expo-checkbox"
 import { useRouter } from 'expo-router';
-const IP = "192.168.0.55";
+
+const { LOCALIP } = require("./LOCALIP");
 
 export default function CreationScreen(){
   const [maxDistanceError, setMaxDistanceError] = useState(false);
