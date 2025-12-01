@@ -173,6 +173,7 @@ void loop() {
 
             delay(1000);
             Serial.println();
+            Serial.println();
             Serial.println("--- NOVA CONFIG APLICADA ---");
             Serial.print("Distância máxima: ");
             Serial.print(config_atual.max_distance_cm);
@@ -208,7 +209,7 @@ void loop() {
         log_leituras.push_back(distancia_cms); // adiciona na lista de logs se estiver dentro da distancia maxima e depois de aplicar config
     }
 
-    if (log_leituras.size() >= 20){ // se derem 30 leituras, calcula o tempo que se passou, envia o log pra API e limpa a lista
+    if (log_leituras.size() >= 20){ // se derem 20 leituras, calcula o tempo que se passou, envia o log pra API e limpa a lista
         unsigned long tempo_percorrido = millis() - tempo_inicial_ms;
         enviaLogLeituras(log_leituras, tempo_percorrido);
         log_leituras.clear();

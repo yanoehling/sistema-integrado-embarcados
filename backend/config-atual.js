@@ -36,7 +36,7 @@ db.run(`CREATE TABLE IF NOT EXISTS config_atual (
 
 var nova_config_aplicada = true;
 
-app.post('/config-atual/aplica-config', (req, res) => {
+app.post('/config-atual/aplica-config', (req, res) => { //só acessado pelo front
     db.run(`DELETE FROM config_atual`, [], (err, bd_res) => {
         if (err){
             console.log("erro ao deletar config antiga: ", err);
@@ -58,7 +58,7 @@ app.post('/config-atual/aplica-config', (req, res) => {
     });
 });
 
-app.get('/config-atual/pega-config-atual', (req, res) => {
+app.get('/config-atual/pega-config-atual', (req, res) => { // só é acessado pelo embarcado
     if(nova_config_aplicada){
         db.all(`SELECT * FROM config_atual`, [], (err, bd_res) => {
             if (err){
