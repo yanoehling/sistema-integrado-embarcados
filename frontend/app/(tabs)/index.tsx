@@ -27,7 +27,7 @@ export default function HomeScreen() {
     <ImageBackground
       source={require('../../assets/images/BackgoundMainScreen.png')}
       style={styles.background}
-      resizeMode="contain"
+      resizeMode="cover"
     >
       <Animated.Image
         style={[styles.logo, { transform: [{ translateY: animation }] }]}
@@ -66,8 +66,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 60,
+    alignItems: 'center'
   },
-
 });

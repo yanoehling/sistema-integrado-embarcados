@@ -4,7 +4,7 @@ import {Animated, View, Text, Image, TouchableOpacity, StyleSheet} from 'react-n
 import InputComponent from '@/components/fom_component';
 import Checkbox from "expo-checkbox"
 import { useRouter } from 'expo-router';
-
+const IP = "192.168.0.55";
 
 export default function CreationScreen(){
   const [maxDistanceError, setMaxDistanceError] = useState(false);
@@ -32,7 +32,7 @@ export default function CreationScreen(){
     }
     if(erro)return false;
 
-    const res = await fetch(`http://${window.location.hostname}:5000/controle/add-config`, {
+    const res = await fetch(`http://${IP}:8000/controle/add-config`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
@@ -45,7 +45,7 @@ export default function CreationScreen(){
         sound_on: soundOn
       })
     });
-    const data = await res.json();
+    const data = await res.text();
     console.log("Respota: " + data)
     return res.ok;
   }

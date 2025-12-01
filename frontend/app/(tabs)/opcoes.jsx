@@ -1,12 +1,14 @@
 import * as React from 'react';
 import {useRef, useEffect, useState, useCallback} from 'react';
-import {Animated, View, Text, Image, TouchableOpacity, StyleSheet, Alert} from 'react-native';
+import {Animated, View, Text, Image, TouchableOpacity, StyleSheet, Alert, Platform} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import OpcoesDetail from '@/components/detalhes_opcoes';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useFocusEffect } from 'expo-router';
 
+const IP = "192.168.0.55";
 export default function OpcoesScreen(){
+  const platform = Platform.OS
   //opc é a lista de todos as configs puxadas pelo get_all
   const [opc, setOpc] = useState([]);
   //selectedOpc é a configuração atualmente selecionada
@@ -17,7 +19,7 @@ export default function OpcoesScreen(){
       const assyncfunc = async () =>{
         try{
           console.log("Tela opcoes renderizou!")
-          const res = await fetch(`http://${window.location.hostname}:5000/controle/get-all`);
+          const res = await fetch(`http://${IP}:8000/controle/get-all`);
           const json = await res.json()
           if (json.length > 0){
             setSelectedOpc(json[0])
@@ -32,13 +34,31 @@ export default function OpcoesScreen(){
   }, []))
 
   const deleteConfirm = () => {
-    const ok = window.confirm("Você tem certeza que deseja excluir?")
-    if(ok) deleteHandle();
+    if(platform == "web"){
+      const ok = window.confirm("Você tem certeza que deseja excluir?")
+      if(ok) deleteHandle();
+    }else if(platform == "android" || platform == "ios"){
+      Alert.alert(
+        "Confirmação",
+        "Você tem certeza que deseja excluir?",
+        [
+          {
+            text: "Cancelar",
+            style: "cancel"
+          },
+          {
+            text: "Excluir",
+            style: "destructive",
+            onPress: () => deleteHandle()
+          }
+        ]
+      )
+    }
     return;
   }
 
   const deleteHandle = async () =>{
-    const res = await fetch(`http://${window.location.hostname}:5000/controle/delete-config/${selectedOpc.id}`,
+    const res = await fetch(`http://${IP}:8000/controle/delete-config/${selectedOpc.id}`,
       {
         method: "DELETE",
       }
@@ -48,10 +68,41 @@ export default function OpcoesScreen(){
     }
   }
 
+  const applyHandler = async () =>{
+    const res = await fetch(`http://${IP}:8040/config-atual/aplica-config`,
+      {method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          max_distance_cm: selectedOpc.max_distance_cm,
+          min_delay_ms: selectedOpc.min_delay_ms,
+          max_delay_ms: selectedOpc.max_delay_ms,
+          light_on: selectedOpc.light_on,
+          sound_on: selectedOpc.sound_on
+        })
+      }
+    );
+    if (res.ok){
+      if(platform == "web"){
+        window.alert("Configuração aplicada com sucesso!");
+      }else if(platform == "android" || platform == "ios"){
+        Alert.alert(
+          "Configuração selecionada!",
+          "Configuração foi aplicada com sucesso!",
+          [
+            {
+              text: "ok"
+            }
+          ]
+        )
+      }
+    }
+  }
   return(
   <View style={styles.container}>
     <Text>Escolha uma Opção</Text>
-    <Picker selectedValue={selectedOpc.id} onValueChange={(value) => {
+    <Picker style={{ width: "90%", zIndex: 10, elevation: 10 }} selectedValue={selectedOpc.id} onValueChange={(value) => {
       const configSelected = opc.find((item) => item.id == value);
       setSelectedOpc(configSelected);
     }}>
@@ -73,7 +124,7 @@ export default function OpcoesScreen(){
       <TouchableOpacity style={styles.button} onPress={deleteConfirm}>
         <Text>Remover</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={applyHandler}>
         <Text>Aplicar</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={()=>router.push("/(tabs)")}>
@@ -86,33 +137,60 @@ export default function OpcoesScreen(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 60,
-    backgroundColor: 'white'
+    width: "100%",
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    backgroundColor: "#f5f5f5",
+    alignItems: "center",
   },
+
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#333",
+  },
+
+  picker: {
+    width: "90%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    elevation: 3,
+    marginBottom: 25,
+  },
+
   grid_container: {
+    width: "90%",
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    marginTop: 50
+    marginBottom: 40,
   },
 
   flex_container: {
-    flex: 1,
+    width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center"
+    justifyContent: "center",
   },
+
   button: {
-    backgroundColor: "#bdbdbd",
+    backgroundColor: "#4e73df",
     paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 8,
+    paddingHorizontal: 25,
+    borderRadius: 10,
     alignItems: "center",
-    margin: 20,
-    justifyContent: "center"
-  }
-})
+    margin: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+
+  buttonText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 15,
+  },
+});
