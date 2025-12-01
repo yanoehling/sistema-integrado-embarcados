@@ -20,9 +20,9 @@ var db = new sqlite3.Database('./dbs/configs.db', (err) =>{
 
 db.run(`CREATE TABLE IF NOT EXISTS configs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        max_distance INTEGER check(max_distance > 1),
-        min_delay INTEGER check(min_delay > 10),
-        max_delay INTEGER check(max_delay > 20),
+        max_distance_cm INTEGER check(max_distance_cm > 1),
+        min_delay_ms INTEGER check(min_delay_ms > 10),
+        max_delay_ms INTEGER check(max_delay_ms > 20),
         light_on BOOLEAN,
         sound_on BOOLEAN
         )`,
@@ -34,9 +34,9 @@ db.run(`CREATE TABLE IF NOT EXISTS configs (
 );
 
 app.post('/controle/add-config', (req, res) => {
-    db.run(`INSERT INTO configs (max_distance, min_delay, max_delay, light_on, sound_on)
+    db.run(`INSERT INTO configs (max_distance_cm, min_delay_ms, max_delay_ms, light_on, sound_on)
             VALUES (?, ?, ?, ?, ?)`,
-        [req.body.max_distance, req.body.min_delay, req.body.max_delay, req.body.light_on, req.body.sound_on],
+        [req.body.max_distance_cm, req.body.min_delay_ms, req.body.max_delay_ms, req.body.light_on, req.body.sound_on],
         (err, bd_res) => {
         if (err){
             return res.status(400).send("erro: ", err);

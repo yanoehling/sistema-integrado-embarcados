@@ -18,8 +18,10 @@ var db = new sqlite3.Database('./dbs/logs.db', (err) =>{
 });
 
 db.run(`CREATE TABLE IF NOT EXISTS logs (
-        datetime DATETIME PRIMARY KEY,
-        values_json TEXT
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        datetime DATETIME,
+        values_json_cms TEXT,
+        tempo_leitura_s FLOAT
         )`,
     [], (err) => {
         if (err){
@@ -29,12 +31,13 @@ db.run(`CREATE TABLE IF NOT EXISTS logs (
 );
 
 app.post('/logging/register', (req, res) => {
-    db.all(`INSERT INTO logs VALUES (?, ?)`,
-        [req.body.datetime, req.body.values_json], (err, bd_res) => {
+    db.run(`INSERT INTO logs (datetime, values_json_cms, tempo_leitura_s) VALUES (?, ?, ?)`,
+        [new Date().toISOString(), JSON.stringify(req.body.values_json_cms), req.body.tempo_leitura_s],
+        (err, bd_res) => {
         if (err){
             console.log("erro: ", err);
         } else {
-            res.send(bd_res);
+            return res.status(200).send("Log dicionado com sucesso");
         }
     });
 });
@@ -49,22 +52,12 @@ app.get('/logging/get-all', (req, res) => {
     });
 });
 
-app.get('/logging/get/:id', (req, res) => {
-    db.all(`SELECT * FROM logs WHERE id = ?`, [req.params.id], (err, bd_res) => {
-        if (err){
-            console.log("erro: ", err)
-        } else {
-            res.send(bd_res)
-        }
-    });
-});
-
 app.delete('/logging/limpar-tudo', (req, res) => {
-    db.all(`DELETE FROM logs`, [req.params.id], (err, bd_res) => {
+    db.run(`DELETE FROM logs`, [req.params.id], (err, bd_res) => {
         if (err){
             console.log("erro: ", err)
         } else {
-            res.send(bd_res)
+            return res.status(200).send("Logs limpados com sucesso");
         }
     });
 });
