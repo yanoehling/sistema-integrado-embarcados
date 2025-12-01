@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const sqlite3 = require('sqlite3');
 const body_parser = require('body-parser');
-const port = 8040;
+const PORT = 8040;
 
 const cors = require("cors");
 app.use(cors());
@@ -12,10 +12,10 @@ app.use(body_parser.urlencoded({extended: true}));
 
 var db = new sqlite3.Database('./dbs/config_atual.db', (err) =>{
     if(err){
-        console.log("Não foi possível criar/conectar com o bd.");
+        console.log("Não foi possível criar/conectar com o bd 'config_atual'.");
         throw err;
     }
-    console.log("Banco de dados criado/conectado com sucesso.");
+    console.log("Banco de dados 'config_atual' criado/conectado com sucesso.");
 });
 
 
@@ -29,7 +29,7 @@ db.run(`CREATE TABLE IF NOT EXISTS config_atual (
         )`,
     [], (err) => {
         if (err){
-            console.log("Erro na conexão/criação do banco de dados.");
+            console.log("Erro na conexão/criação do banco de dados 'config_atual'.");
         }
     }
 );
@@ -40,7 +40,7 @@ app.post('/config-atual/aplica-config', (req, res) => {
     db.run(`DELETE FROM config_atual`, [], (err, bd_res) => {
         if (err){
             console.log("erro ao deletar config antiga: ", err);
-            return res.status(500).send("Erro ao limpar config antiga.");
+            return res.status(500).send("Erro ao limpar config antiga."); 
         }
         db.run(`INSERT INTO config_atual (max_distance_cm, min_delay_ms, max_delay_ms, light_on, sound_on)
             VALUES (?, ?, ?, ?, ?)`,
@@ -63,7 +63,11 @@ app.get('/config-atual/pega-config-atual', (req, res) => {
         db.all(`SELECT * FROM config_atual`, [], (err, bd_res) => {
             if (err){
                 console.log("erro: ", err);
+                return res.status(500).send("Erro ao buscar configuração atual.");
             } else {
+                if (!bd_res || bd_res.length === 0) {
+                    return res.status(404).send("Nenhuma configuração encontrada.");
+                }
                 res.send(bd_res[0]);
             }
         });
@@ -73,6 +77,6 @@ app.get('/config-atual/pega-config-atual', (req, res) => {
     }
 });
 
-app.listen(port, "0.0.0.0", () =>{
-    console.log("Servidor rodando localmente na porta ", port);
+app.listen(PORT, "0.0.0.0", () =>{
+    console.log("Servidor 'config-atual' rodando localmente na porta ", PORT);
 });

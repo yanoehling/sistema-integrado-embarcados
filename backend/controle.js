@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const sqlite3 = require('sqlite3');
 const body_parser = require('body-parser');
-const port = 8000;
+const PORT = 8000;
 
 const cors = require("cors");
 app.use(cors());
@@ -12,10 +12,10 @@ app.use(body_parser.urlencoded({extended: true}));
 
 var db = new sqlite3.Database('./dbs/configs.db', (err) =>{
     if(err){
-        console.log("Não foi possível criar/conectar com o bd.");
+        console.log("Não foi possível criar/conectar com o bd 'configs'.");
         throw err;
     }
-    console.log("Banco de dados criado/conectado com sucesso.");
+    console.log("Banco de dados 'configs' criado/conectado com sucesso.");
 });
 
 db.run(`CREATE TABLE IF NOT EXISTS configs (
@@ -28,7 +28,7 @@ db.run(`CREATE TABLE IF NOT EXISTS configs (
         )`,
     [], (err) => {
         if (err){
-            console.log("Erro na conexão/criação do banco de dados.");
+            console.log("Erro na conexão/criação do banco de dados 'configs'.");
         }
     }
 );
@@ -39,9 +39,9 @@ app.post('/controle/add-config', (req, res) => {
         [req.body.max_distance_cm, req.body.min_delay_ms, req.body.max_delay_ms, req.body.light_on, req.body.sound_on],
         (err, bd_res) => {
         if (err){
-            return res.status(400).send("erro: ", err);
+            return res.status(400).send("Erro ao adicionar configuração.");
         } else {
-            return res.status(200).send("Adicionado com sucesso");
+            return res.status(201).send("Config dicionada com sucesso");
         }
     });
 });
@@ -50,6 +50,7 @@ app.get('/controle/get-all', (req, res) => {
     db.all(`SELECT * FROM configs`, [], (err, bd_res) => {
         if (err){
             console.log("erro: ", err);
+            return res.status(500).send("Erro ao obter configurações.");
         } else {
             res.send(bd_res);
         }
@@ -59,9 +60,13 @@ app.get('/controle/get-all', (req, res) => {
 app.get('/controle/get/:id', (req, res) => {
     db.get(`SELECT * FROM configs WHERE id = ?`, [req.params.id], (err, bd_res) => {
         if (err){
-            console.log("erro: ", err)
+            console.log("erro: ", err);
+            return res.status(500).send("Erro ao obter configuração.");       // linha 58 <-- alterado
         } else {
-            res.send(bd_res)
+            if (!bd_res) {
+                return res.status(404).send("Configuração não encontrada.");  // linha 60 <-- alterado
+            }
+            res.send(bd_res);
         }
     });
 });
@@ -69,13 +74,14 @@ app.get('/controle/get/:id', (req, res) => {
 app.delete('/controle/delete-config/:id', (req, res) => {
     db.run(`DELETE FROM configs where id = ?`, [req.params.id], (err, bd_res) => {
         if (err){
-            console.log("erro: ", err)
+            console.log("erro: ", err);
+            return res.status(500).send("Erro ao deletar configuração.");
         } else {
-            res.send("Deletado com sucesso")
+            return res.status(200).send("Config deletada com sucesso");
         }
     });
 });
 
-app.listen(port, "0.0.0.0", () =>{
-    console.log("Servidor rodando localmente na porta ", port);
+app.listen(PORT, "0.0.0.0", () =>{
+    console.log("Servidor 'controle' rodando localmente na porta ", PORT);
 });

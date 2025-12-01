@@ -23,12 +23,20 @@ app.use((req, res, next) => {
     if (microsservico == null){
         return res.status(404).send('Microsserviço não encontrado.');
     } else {
-        return httpProxy(microsservico,
-            {proxyReqPathResolver: req => req.originalUrl}
-        )(req, res, next);
+        return httpProxy(microsservico, {
+            proxyReqPathResolver: req => req.originalUrl,
+
+            proxyErrorHandler: (err, res, next) => {
+                if (err && err.code === 'ECONNREFUSED') {
+                    res.status(502).send('Microsserviço indisponível.');
+                } else {
+                    res.status(500).send('Erro interno no proxy.');
+                }
+            }
+        })(req, res, next);
     }
 });
 
 app.listen(PORT, "0.0.0.0", () => {
-    console.log('API Gateway iniciado!');
+    console.log('API Gateway iniciado na porta ', PORT);
 });
