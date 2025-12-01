@@ -24,4 +24,4 @@ node logging.js
 npx expo start
 
 ## Embarcado (esp32):
-Mudar apenas ip para o da máquina local, adicionar o código na placa via IDE (Arduino IDE) e deixar rodando.
+Mudar apenas ip para o da máquina do servidor local, adicionar o código na placa via IDE (Arduino IDE) e deixar rodando.
