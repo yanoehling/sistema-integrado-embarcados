@@ -124,7 +124,6 @@ void enviaLogLeituras(std::vector<int> lista_de_leituras, int tempo_leitura_ms) 
         Serial.println();
         Serial.print("Enviando JSON para o logging na API: ");
         Serial.println(jsonOutput); 
-        Serial.println();
 
         int httpResponseCode = http.POST(jsonOutput); // dá o post
 
@@ -132,13 +131,16 @@ void enviaLogLeituras(std::vector<int> lista_de_leituras, int tempo_leitura_ms) 
             String response = http.getString();
             Serial.print("Resposta: ");
             Serial.println(response);
+            Serial.println();
         } else {
             Serial.print("Erro POST: ");
             Serial.println(httpResponseCode);
+            Serial.println();
         }
         http.end(); 
     } else {
         Serial.println("WiFi desconectado.");
+        Serial.println();
     }
 }
 
