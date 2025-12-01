@@ -102,7 +102,7 @@ export default function OpcoesScreen(){
   }
   return(
   <View style={styles.container}>
-    <Text style={styles.title}>Escolha uma Opção</Text>
+    <Text style={styles.title}>Configuração</Text>
     <Picker style={{ width: "95%", zIndex: 10, elevation: 10, marginBottom: 30, textAlign: "center", backgroundColor: "#f5f5f5"}} selectedValue={selectedOpc.id} onValueChange={(value) => {
       const configSelected = opc.find((item) => item.id == value);
       setSelectedOpc(configSelected);
