@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView} from 'react-native';
 import LogText from '../../components/log-text';
 
 const { LOCALIP } = require("./LOCALIP");
@@ -24,11 +24,11 @@ export default function LogScreen(){
         }, [])
       );
 	return(
-		<View style={styles.background}>
+		<ScrollView style={styles.background} showsVerticalScrollIndicator={false}>
 			{logs.map((value) =>(
 				<LogText tempo_de_inicio={value.datetime} duracao={value.tempo_leitura_s} distancia_array={value.values_json_cms} />
 			))}
-		</View>
+		</ScrollView>
 	);
 }
 
