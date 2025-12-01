@@ -34,14 +34,14 @@ export default function HomeScreen() {
         source={require('../../assets/images/Volante.png')}
       />
 
-      <Text style={styles.title}>Sense of Direction</Text>
+      <Text style={styles.title}>Sense of Direction ESP32</Text>
 
       <View style={styles.button}>
-        <Button title="Selecionar Opção" onPress={() => router.push('/opcoes')} />
+        <Button title="Selecionar Configuração" onPress={() => router.push('/opcoes')} />
       </View>
 
       <View style={styles.button}>
-        <Button title="Histórico" onPress={() => router.push('/(tabs)/logs')} />
+        <Button title="Histórico de Logs" onPress={() => router.push('/(tabs)/logs')} />
       </View>
 
       <View style={styles.button}>

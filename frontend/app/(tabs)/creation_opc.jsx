@@ -33,7 +33,7 @@ export default function CreationScreen(){
     }
     if(erro)return false;
 
-    const res = await fetch(`http://${LOCALIP}:8000/controle/add-config`, {
+    const res = await fetch(`http://${LOCALIP}:5000/controle/add-config`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"

@@ -20,7 +20,7 @@ export default function OpcoesScreen(){
       const assyncfunc = async () =>{
         try{
           console.log("Tela opcoes renderizou!")
-          const res = await fetch(`http://${LOCALIP}:8000/controle/get-all`);
+          const res = await fetch(`http://${LOCALIP}:5000/controle/get-all`);
           const json = await res.json()
           if (json.length > 0){
             setSelectedOpc(json[0])
@@ -59,7 +59,7 @@ export default function OpcoesScreen(){
   }
 
   const deleteHandle = async () =>{
-    const res = await fetch(`http://${LOCALIP}:8000/controle/delete-config/${selectedOpc.id}`,
+    const res = await fetch(`http://${LOCALIP}:5000/controle/delete-config/${selectedOpc.id}`,
       {
         method: "DELETE",
       }
@@ -70,7 +70,7 @@ export default function OpcoesScreen(){
   }
 
   const applyHandler = async () =>{
-    const res = await fetch(`http://${LOCALIP}:8040/config-atual/aplica-config`,
+    const res = await fetch(`http://${LOCALIP}:5000/config-atual/aplica-config`,
       {method: "POST",
         headers: {
           "Content-Type": "application/json",
