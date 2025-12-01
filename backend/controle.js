@@ -41,7 +41,7 @@ app.post('/controle/add-config', (req, res) => {
         if (err){
             return res.status(400).send("Erro ao adicionar configuração.");
         } else {
-            return res.status(201).send("COnfig dicionada com sucesso");
+            return res.status(201).send("Config dicionada com sucesso");
         }
     });
 });
