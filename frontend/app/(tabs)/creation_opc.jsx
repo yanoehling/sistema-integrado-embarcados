@@ -33,7 +33,7 @@ export default function CreationScreen(){
     }
     if(erro)return false;
 
-    const res = await fetch(`http://${IP}:8000/controle/add-config`, {
+    const res = await fetch(`http://${LOCALIP}:8000/controle/add-config`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
@@ -54,9 +54,9 @@ export default function CreationScreen(){
   <View style={styles.container}>
     <Text style={styles.title}>Criando uma Configuração</Text>
 
-    <InputComponent placeholder={"Distancia Máxima"} label={"Distancia Máxima"}  onChangeValue={(distance)=> {setMaxDistance(distance); setMaxDistanceError(false)}} boolError={maxDistanceError} messageError={"A distancia máxima tem que ser maior do que 10"}/>
-    <InputComponent placeholder={"Delay Mínimo"} label={"Delay Mínimo"} onChangeValue={(delay) => {setMinDelay(delay); setminDelayError(false)}} boolError={minDelayError} messageError={"O Delay mínimo precisa ser maior do que 10"}/>
-    <InputComponent placeholder={"Delay Máximo"} label={"Delay Máximo"} onChangeValue={(delay)=>{setMaxDelay(delay); setmaxDelayError(false)}} boolError={maxDelayError} messageError={"O Delay máximo precisa ser maior do que 20"}/>
+    <InputComponent placeholder={"Distancia Máxima"} label={"Distancia Máxima (cm)"}  onChangeValue={(distance)=> {setMaxDistance(distance); setMaxDistanceError(false)}} boolError={maxDistanceError} messageError={"A distancia máxima tem que ser maior do que 10"}/>
+    <InputComponent placeholder={"Delay Mínimo"} label={"Delay Mínimo (ms)"} onChangeValue={(delay) => {setMinDelay(delay); setminDelayError(false)}} boolError={minDelayError} messageError={"O Delay mínimo precisa ser maior do que 10"}/>
+    <InputComponent placeholder={"Delay Máximo"} label={"Delay Máximo (ms)"} onChangeValue={(delay)=>{setMaxDelay(delay); setmaxDelayError(false)}} boolError={maxDelayError} messageError={"O Delay máximo precisa ser maior do que 20"}/>
     <View style={styles.check_box_container}>
       <Text style={styles.label}>Luzes Ligadas?</Text>
       <Checkbox value={lightsOn} onValueChange={setLightsOn} />

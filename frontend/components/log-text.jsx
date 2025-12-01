@@ -20,7 +20,7 @@ export default function LogText({ tempo_de_inicio, duracao, distancia_array }) {
 
   return (
     <View style={styles.logContainer}>
-      <Text style={styles.logHeader}>
+      <Text style={styles.logHeaderTitle}>
         [{dataBr} {timeBr} - {finalDateStr}]
       </Text>
       <Text style={styles.logHeader}>Tempo de Leitura: {duracao}s</Text>
@@ -31,6 +31,7 @@ export default function LogText({ tempo_de_inicio, duracao, distancia_array }) {
 }
 
 const styles = StyleSheet.create({
+    
   logContainer: {
     backgroundColor: "#f5f5f5",
     padding: 10,
@@ -43,6 +44,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 4,
     color: "#333",
+  },
+  logHeaderTitle: {
+    fontWeight: "bold",
+    marginBottom: 4,
+    color: "#333",
+    fontSize: 16,
   },
   logValues: {
     color: "#555",
